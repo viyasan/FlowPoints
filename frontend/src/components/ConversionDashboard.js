@@ -103,15 +103,16 @@ const ConversionDashboard = ({ user, onLogout }) => {
   const flowTokens = pointsToConvert ? (parseInt(pointsToConvert) / 100).toFixed(2) : '0.00';
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">FlowPoints</h1>
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-600">Welcome, {user.username}</span>
+    <div className="App fade-in">
+      {/* Modern Header */}
+      <div className="fintech-header">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+          <h1 className="text-gradient text-large">💎 FlowPoints</h1>
+          <div className="flex items-center space-x-6">
+            <span className="text-medium">Welcome, <strong>{user.username}</strong></span>
             <button
               onClick={onLogout}
-              className="text-blue-600 hover:text-blue-800"
+              className="btn-danger"
             >
               Logout
             </button>
@@ -119,55 +120,66 @@ const ConversionDashboard = ({ user, onLogout }) => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Balance and Conversion */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Account Balance</h2>
+          {/* Balance and Conversion Card */}
+          <div className="fintech-card-large p-8">
+            <h2 className="text-large mb-6">💰 Account Overview</h2>
             
-            <div className="mb-6">
-              <div className="text-3xl font-bold text-blue-600 mb-2">
-                {loyaltyPoints.toLocaleString()} points
+            {/* Balance Display */}
+            <div className="balance-display mb-8">
+              <div className="balance-amount">
+                {loyaltyPoints.toLocaleString()}
               </div>
+              <div className="text-white/80 text-lg font-medium mb-4">Loyalty Points</div>
               <button
                 onClick={fetchBalance}
-                className="text-sm text-gray-600 hover:text-gray-800"
+                className="btn-secondary bg-white/20 border-white/30 text-white hover:bg-white/30"
               >
-                Refresh Balance
+                🔄 Refresh Balance
               </button>
             </div>
 
-            <div className="mb-6">
-              <h3 className="text-lg font-medium mb-2">Flow Wallet</h3>
+            {/* Flow Wallet Status */}
+            <div className="mb-8">
+              <h3 className="text-medium mb-4">🌊 Flow Wallet Connection</h3>
               {flowUser.loggedIn ? (
-                <div className="flex items-center justify-between p-3 bg-green-50 rounded-md">
+                <div className="status-connected flex items-center justify-between">
                   <div>
-                    <div className="text-sm font-medium text-green-800">Connected</div>
-                    <div className="text-xs text-green-600">{flowUser.addr}</div>
+                    <div className="font-semibold">✅ Connected</div>
+                    <div className="text-white/80 text-sm font-mono">{flowUser.addr}</div>
                   </div>
                   <button
                     onClick={disconnectWallet}
-                    className="text-sm text-red-600 hover:text-red-800"
+                    className="btn-danger"
                   >
                     Disconnect
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={connectWallet}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
-                >
-                  Connect Flow Wallet
-                </button>
+                <div className="status-disconnected text-center">
+                  <div className="mb-3">
+                    <div className="text-2xl mb-2">🔗</div>
+                    <div className="font-medium">Wallet Not Connected</div>
+                    <div className="text-small">Connect your Flow wallet to convert points</div>
+                  </div>
+                  <button
+                    onClick={connectWallet}
+                    className="btn-primary w-full"
+                  >
+                    Connect Flow Wallet
+                  </button>
+                </div>
               )}
             </div>
 
+            {/* Conversion Section */}
             <div>
-              <h3 className="text-lg font-medium mb-4">Convert Points to FLOW</h3>
+              <h3 className="text-medium mb-6">🔄 Convert Points to FLOW</h3>
               
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-medium mb-2">
                     Points to Convert
                   </label>
                   <input
@@ -177,61 +189,108 @@ const ConversionDashboard = ({ user, onLogout }) => {
                     placeholder="Minimum 100 points"
                     min="100"
                     max={loyaltyPoints}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="fintech-input"
                   />
                 </div>
 
-                <div className="p-3 bg-gray-50 rounded-md">
-                  <div className="text-sm text-gray-600">You will receive:</div>
-                  <div className="text-lg font-semibold text-blue-600">{flowTokens} FLOW</div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    Exchange Rate: 100 points = 1 FLOW
+                <div className="conversion-rate">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="font-medium">You will receive:</span>
+                    <span className="text-2xl font-bold">{flowTokens} FLOW</span>
+                  </div>
+                  <div className="text-small">
+                    💡 Exchange Rate: 100 points = 1 FLOW token
                   </div>
                 </div>
 
                 <button
                   onClick={handleConvert}
                   disabled={loading || !flowUser.loggedIn || !pointsToConvert || parseInt(pointsToConvert) < 100}
-                  className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className={`btn-primary w-full ${loading ? 'pulse-green' : ''}`}
                 >
-                  {loading ? 'Converting...' : 'Convert Points'}
+                  {loading ? '⏳ Converting...' : '✨ Convert Points'}
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Transaction History */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">Transaction History</h2>
+          {/* Conversion History Card */}
+          <div className="fintech-card-large p-8">
+            <h2 className="text-large mb-6">📊 Conversion History</h2>
             
-            {conversions.length === 0 ? (
-              <div className="text-gray-500 text-center py-8">
-                No conversions yet
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {conversions.slice().reverse().map((conversion) => (
-                  <div key={conversion.id} className="border border-gray-200 rounded-md p-3">
-                    <div className="flex justify-between items-start">
+            {conversions.length > 0 ? (
+              <div className="space-y-4 max-h-96 overflow-y-auto">
+                {conversions.map((conversion, index) => (
+                  <div key={index} className="fintech-card p-4">
+                    <div className="flex justify-between items-start mb-2">
                       <div>
-                        <div className="font-medium">
-                          {conversion.points} points → {conversion.flowTokens} FLOW
+                        <div className="font-semibold text-primary-green">
+                          +{conversion.flowAmount} FLOW
                         </div>
-                        <div className="text-sm text-gray-600">
-                          To: {conversion.flowAddress}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {new Date(conversion.timestamp).toLocaleString()}
+                        <div className="text-small">
+                          -{conversion.pointsAmount} points
                         </div>
                       </div>
-                      <div className="text-green-600 text-sm font-medium">
-                        Completed
+                      <div className="text-right">
+                        <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                          conversion.status === 'completed' 
+                            ? 'bg-green-100 text-green-800' 
+                            : conversion.status === 'pending'
+                            ? 'bg-yellow-100 text-yellow-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}>
+                          {conversion.status === 'completed' ? '✅' : conversion.status === 'pending' ? '⏳' : '❌'} 
+                          {conversion.status}
+                        </div>
                       </div>
                     </div>
+                    <div className="text-small">
+                      📅 {new Date(conversion.timestamp).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                    {conversion.transactionId && (
+                      <div className="text-small font-mono mt-2 p-2 bg-gray-50 rounded">
+                        🔗 TX: {conversion.transactionId.substring(0, 20)}...
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">📈</div>
+                <div className="text-medium mb-2">No conversions yet</div>
+                <div className="text-small">
+                  Your conversion history will appear here once you start converting points to FLOW tokens.
+                </div>
+              </div>
             )}
+          </div>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+          <div className="fintech-card p-6 text-center">
+            <div className="text-3xl mb-2">💎</div>
+            <div className="text-2xl font-bold text-gradient">{loyaltyPoints.toLocaleString()}</div>
+            <div className="text-small">Total Points</div>
+          </div>
+          <div className="fintech-card p-6 text-center">
+            <div className="text-3xl mb-2">🌊</div>
+            <div className="text-2xl font-bold text-gradient">
+              {conversions.reduce((sum, c) => sum + parseFloat(c.flowAmount || 0), 0).toFixed(2)}
+            </div>
+            <div className="text-small">FLOW Earned</div>
+          </div>
+          <div className="fintech-card p-6 text-center">
+            <div className="text-3xl mb-2">📊</div>
+            <div className="text-2xl font-bold text-gradient">{conversions.length}</div>
+            <div className="text-small">Total Conversions</div>
           </div>
         </div>
       </div>
