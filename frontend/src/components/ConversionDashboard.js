@@ -175,7 +175,7 @@ const ConversionDashboard = ({ user, onLogout }) => {
 
             {/* Conversion Section */}
             <div>
-              <h3 className="text-medium mb-6">🔄 Convert Points to FLOW</h3>
+              <h3 className="text-medium mb-6">🔄 Convert your Citi Points to FLOW</h3>
               
               <div className="space-y-6">
                 <div>

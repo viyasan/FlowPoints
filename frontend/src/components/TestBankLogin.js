@@ -42,14 +42,14 @@ const TestBankLogin = ({ onLogin }) => {
           <div className="text-center mb-12">
             <div className="text-7xl mb-6">🏦</div>
             <h1 className="text-gradient text-large mb-4">Sample Bank Portal</h1>
-            <p className="text-medium">Access your loyalty points account</p>
+            <p className="text-medium">Convert your Citibank loyalty points to Flow tokens for fun redemption experiences</p>
           </div>
 
           {/* Login Card - Centered with more padding */}
           <div className="fintech-card-large p-10 mx-auto">
             <div className="text-center mb-8">
               <h2 className="text-large mb-3">Welcome Back</h2>
-              <p className="text-small">Sign in to manage your loyalty points</p>
+              <p className="text-small">Sign in to convert your loyalty points!</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-8">
@@ -112,20 +112,6 @@ const TestBankLogin = ({ onLogin }) => {
                   <div><strong>Password:</strong> password123</div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Features - Centered with more spacing */}
-          <div className="mt-12 grid grid-cols-1 gap-6 max-w-sm mx-auto">
-            <div className="fintech-card p-6 text-center">
-              <div className="text-3xl mb-3">💎</div>
-              <div className="text-medium mb-2">Loyalty Points</div>
-              <div className="text-small">Earn and manage your rewards</div>
-            </div>
-            <div className="fintech-card p-6 text-center">
-              <div className="text-3xl mb-3">🌊</div>
-              <div className="text-medium mb-2">Flow Integration</div>
-              <div className="text-small">Convert points to FLOW tokens</div>
             </div>
           </div>
         </div>
